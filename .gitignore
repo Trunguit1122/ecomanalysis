@@ -1,0 +1,11 @@
+# Tài liệu nộp (báo cáo, slide, hướng dẫn nội bộ) chỉ giữ trên máy; repo chỉ chứa code và dữ liệu
+report/
+
+# Kết quả do notebook sinh ra; chạy lại notebook để tạo
+*_Ket_qua/
+
+# Môi trường và file tạm
+.ipynb_checkpoints/
+__pycache__/
+.venv/
+venv/
