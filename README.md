@@ -65,11 +65,11 @@ Notebook `analysis/` gom dữ liệu đã làm sạch thành `dataset/NhomXX_Du_
 | --- | --- | --- |
 | `analysis/NhomXX_Phan_tich.ipynb` | 1. Thu thập và hiểu dữ liệu | Nạp dữ liệu, kiểm tra cấu trúc, kiểm kê vấn đề |
 | | 2. Tiền xử lý | Lọc tuần tự có nhật ký, tạo bảng khách hàng, chia train/test |
-| | 3. EDA (train) | Thống kê mô tả, trực quan, Pearson, ANOVA và kiểm tra giả định |
-| `predict/NhomXX_Du_doan.ipynb` | 4. Chuẩn bị dữ liệu cho mô hình | Tương quan giữa đặc trưng, Pipeline |
-| | 5. Mô hình hóa | Baseline, SLR, MLR, đa thức, Ridge + GridSearchCV; chọn bằng CV 5 fold |
-| | 6. Đánh giá | Chỉ số trên test, phân tích sai số, biểu đồ chẩn đoán |
-| | 7. Diễn giải | Hệ số, kiểm tra độ nhạy giữ dòng trùng, demo |
+| | 3. EDA (train) | Thống kê mô tả, mức tập trung chi tiêu, trực quan, Pearson/Spearman, ANOVA, kiểm tra giả định và độ lớn hiệu ứng |
+| `predict/NhomXX_Du_doan.ipynb` | 4. Chuẩn bị dữ liệu cho mô hình | Tương quan giữa đặc trưng, VIF, Pipeline |
+| | 5. Mô hình hóa | Baseline, SLR, MLR, đa thức, Ridge + GridSearchCV; chọn bằng CV 5 fold; learning curve |
+| | 6. Đánh giá | Chỉ số trên test, khoảng tin cậy bootstrap, hiệu chỉnh theo decile, sai số theo nhóm, biểu đồ chẩn đoán |
+| | 7. Diễn giải | Hệ số, khoảng tin cậy OLS và bootstrap cho SLR, kiểm tra độ nhạy giữ dòng trùng, demo |
 
 ## Cách chạy
 
@@ -103,11 +103,12 @@ ecomanalysis/
     |-- NhomXX_Online_Retail.xlsx           # Dữ liệu gốc UCI, giữ nguyên byte
     |-- NhomXX_Du_lieu_mo_hinh.csv          # Bảng khách hàng (do analysis tạo)
     `-- NhomXX_Ket_qua/                     # Kết quả do hai notebook tạo (không đưa lên git)
-        |-- figures/                        # 7 biểu đồ dùng trong báo cáo và slide
-        |-- cleaning_audit.csv, raw_missing.csv, descriptive_train.csv, pearson_train.csv
+        |-- figures/                        # 01–07 dùng trong báo cáo và slide; 08 learning curve bổ sung
+        |-- cleaning_audit.csv, raw_missing.csv, descriptive_train.csv, pearson_train.csv, spearman_train.csv
         |-- customers_keep_duplicates.csv   # Bảng khách khi giữ dòng trùng (kiểm tra độ nhạy)
         |-- analysis_summary.json           # Tóm tắt Phase 1–3, đầu vào cho predict
-        |-- ridge_grid.csv, model_selection.csv, test_metrics.csv, test_predictions.csv
+        |-- ridge_grid.csv, model_selection.csv, learning_curve.csv
+        |-- test_metrics.csv, test_predictions.csv, test_bootstrap_ci.csv, test_calibration_deciles.csv
         |-- demo_customers.csv
         `-- summary.json                    # Tóm tắt toàn bộ kết quả
 ```
