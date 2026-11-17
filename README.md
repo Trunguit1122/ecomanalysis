@@ -56,7 +56,7 @@ Notebook `analysis/` gom dữ liệu đã làm sạch thành `dataset/NhomXX_Du_
 - **Dữ liệu khuyết:** trang UCI ghi không khuyết, nhưng file thực tế thiếu `CustomerID` ở 24,927% số dòng và thiếu `Description` ở 1.454 dòng. Không điền `CustomerID` vì đây là mã định danh.
 - **Giao dịch ngoài phạm vi:** hóa đơn hủy, `Quantity`/`UnitPrice` không dương và mã phí/dịch vụ (`POST`, `M`, `C2`, ...) bị loại; mục tiêu là chi tiêu mua hàng dương, không phải doanh thu thuần.
 - **Dòng trùng:** 5.268 dòng trùng toàn bộ 8 cột được loại như một giả định làm sạch, có kiểm tra độ nhạy bằng phương án giữ trùng.
-- **Rò rỉ dữ liệu:** X chỉ dùng giao dịch trước mốc; y chỉ dùng giao dịch trong cửa sổ mục tiêu. EDA liên quan y, chuẩn hóa và chọn mô hình chỉ dùng tập train.
+- **Rò rỉ dữ liệu:** X chỉ dùng giao dịch trước mốc; y chỉ dùng giao dịch trong cửa sổ mục tiêu. EDA liên quan y, chọn biến, chuẩn hóa và chọn mô hình chỉ dùng tập train.
 - **Phân phối lệch:** hơn một nửa số khách có y = 0 và y lệch phải mạnh; RMSE bị chi phối bởi một số khách mua sỉ, nên báo cáo thêm MAE và trung vị sai số.
 
 ## Quy trình
@@ -64,12 +64,25 @@ Notebook `analysis/` gom dữ liệu đã làm sạch thành `dataset/NhomXX_Du_
 | Notebook | Phase | Nội dung |
 | --- | --- | --- |
 | `analysis/NhomXX_Phan_tich.ipynb` | 1. Thu thập và hiểu dữ liệu | Nạp dữ liệu, kiểm tra cấu trúc, kiểm kê vấn đề |
-| | 2. Tiền xử lý | Lọc tuần tự có nhật ký, tạo bảng khách hàng, chia train/test |
-| | 3. EDA (train) | Thống kê mô tả, mức tập trung chi tiêu, trực quan, Pearson/Spearman, ANOVA, kiểm tra giả định và độ lớn hiệu ứng |
-| `predict/NhomXX_Du_doan.ipynb` | 4. Chuẩn bị dữ liệu cho mô hình | Tương quan giữa đặc trưng, VIF, Pipeline |
-| | 5. Mô hình hóa | Baseline, SLR, MLR, đa thức, Ridge + GridSearchCV; chọn bằng CV 5 fold; learning curve |
-| | 6. Đánh giá | Chỉ số trên test, khoảng tin cậy bootstrap, hiệu chỉnh theo decile, sai số theo nhóm, biểu đồ chẩn đoán |
-| | 7. Diễn giải | Hệ số, khoảng tin cậy OLS và bootstrap cho SLR, kiểm tra độ nhạy giữ dòng trùng, demo |
+| | 2. Tiền xử lý | Giá trị khuyết (kể cả ký hiệu ẩn), lọc tuần tự có nhật ký, định dạng, tạo bảng khách hàng, chia train/test, chuẩn hóa, xuất dữ liệu |
+| | 3. EDA (train) | Thống kê mô tả, ngoại lệ IQR, trực quan, Pearson + p-value, gom nhóm/pivot, ANOVA; chọn biến quan trọng |
+| `predict/NhomXX_Du_doan.ipynb` | 4. Chuẩn bị dữ liệu cho mô hình | Biến đầu vào từng mô hình, tương quan giữa các biến |
+| | 5. Mô hình hóa | SLR, MLR, đa thức, Pipeline, over/underfitting theo bậc, Ridge + Grid Search; chọn bằng CV 5 fold |
+| | 6. Đánh giá | MSE, RMSE, MAE, R², RSE, RAE trên test; biểu đồ chẩn đoán; kiểm tra dự đoán hợp lý; sai số theo nhóm |
+| | 7. Diễn giải và mở rộng | Fit lại trên toàn bộ dữ liệu, kiểm tra trên quý kế tiếp, kiểm tra độ nhạy giữ dòng trùng, demo |
+
+### Đối chiếu với bài giảng
+
+| Bài giảng | Áp dụng trong đồ án |
+| --- | --- |
+| Bài 1. Giới thiệu, nhập/xuất | Đặt vấn đề; `read_excel`, `head`/`tail`, `dtypes`, `info`, `describe`; `to_csv` |
+| Bài 2. Sắp xếp dữ liệu | `isna`, ký hiệu khuyết ẩn, `dropna`; `astype`, chuẩn hóa chuỗi; min-max và z-score; `pd.cut`; `get_dummies` |
+| Bài 3–4. Trực quan | Line, bar, histogram, box plot, scatter, heatmap; `subplots` |
+| Bài 5. Phân tích thăm dò | Mean/median/mode, range, IQR, variance, std, CV, skewness, kurtosis; ngoại lệ IQR; Pearson + p-value; `groupby`, `pivot_table`; ANOVA (`f_oneway`); chọn biến theo \|r\| ≥ 0,3 và p < 0,05 |
+| Bài 6. Phát triển mô hình | SLR, MLR, đa thức (`np.polyfit`, `PolynomialFeatures`), Pipeline; regression, residual, distribution plot; MSE, R² |
+| Bài 7. Đánh giá mô hình | `train_test_split` 70/30, `cross_val_score`, `cross_val_predict`; over/underfitting; Ridge; `GridSearchCV`; RMSE, MAE, RSE, RAE; fit lại trên toàn bộ dữ liệu |
+
+**Phần làm thêm:** kiểm tra mô hình đã chọn trên quý kế tiếp (01/09–30/11/2011), là dữ liệu chưa dùng ở bất kỳ bước nào trước đó. Phần này trả lời câu hỏi mà phép chia ngẫu nhiên không trả lời được: mô hình có dự đoán được **quý sau** không.
 
 ## Cách chạy
 
@@ -103,12 +116,13 @@ ecomanalysis/
     |-- NhomXX_Online_Retail.xlsx           # Dữ liệu gốc UCI, giữ nguyên byte
     |-- NhomXX_Du_lieu_mo_hinh.csv          # Bảng khách hàng (do analysis tạo)
     `-- NhomXX_Ket_qua/                     # Kết quả do hai notebook tạo (không đưa lên git)
-        |-- figures/                        # 01–07 dùng trong báo cáo và slide; 08 learning curve bổ sung
-        |-- cleaning_audit.csv, raw_missing.csv, descriptive_train.csv, pearson_train.csv, spearman_train.csv
+        |-- figures/                        # 01–06 từ analysis, 07–12 từ predict
+        |-- cleaning_audit.csv, raw_missing.csv, descriptive_train.csv, pearson_train.csv
         |-- customers_keep_duplicates.csv   # Bảng khách khi giữ dòng trùng (kiểm tra độ nhạy)
-        |-- analysis_summary.json           # Tóm tắt Phase 1–3, đầu vào cho predict
-        |-- ridge_grid.csv, model_selection.csv, learning_curve.csv
-        |-- test_metrics.csv, test_predictions.csv, test_bootstrap_ci.csv, test_calibration_deciles.csv
+        |-- customers_next_quarter.csv      # Bảng khách quý kế tiếp (kiểm tra ngoài thời gian)
+        |-- analysis_summary.json           # Tóm tắt Phase 1–3 và biến được chọn, đầu vào cho predict
+        |-- degree_curve.csv, ridge_grid.csv, model_selection.csv
+        |-- test_metrics.csv, test_predictions.csv, next_quarter_metrics.csv
         |-- demo_customers.csv
         `-- summary.json                    # Tóm tắt toàn bộ kết quả
 ```
@@ -119,5 +133,5 @@ Báo cáo, slide và hướng dẫn nội bộ được nộp riêng theo yêu c
 
 - **Dữ liệu:** Chen, D. (2015). *Online Retail* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33.
 - **scikit-learn:** [Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html), [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), [Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html).
-- **SciPy:** [scipy.stats.f_oneway](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html).
+- **SciPy:** [scipy.stats.pearsonr](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html), [scipy.stats.f_oneway](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html).
 - **Bài giảng IE313:** Bài 1–7 và Kỹ thuật lập trình Python cho phân tích dữ liệu.
