@@ -71,19 +71,6 @@ Notebook `analysis/` gom dữ liệu đã làm sạch thành `dataset/NhomXX_Du_
 | | 6. Đánh giá | MSE, RMSE, MAE, R², RSE, RAE trên test; biểu đồ chẩn đoán; kiểm tra dự đoán hợp lý; sai số theo nhóm |
 | | 7. Diễn giải và mở rộng | Fit lại trên toàn bộ dữ liệu, kiểm tra trên quý kế tiếp, kiểm tra độ nhạy giữ dòng trùng, demo |
 
-### Đối chiếu với bài giảng
-
-| Bài giảng | Áp dụng trong đồ án |
-| --- | --- |
-| Bài 1. Giới thiệu, nhập/xuất | Đặt vấn đề; `read_excel`, `head`/`tail`, `dtypes`, `info`, `describe`; `to_csv` |
-| Bài 2. Sắp xếp dữ liệu | `isna`, ký hiệu khuyết ẩn, `dropna`; `astype`, chuẩn hóa chuỗi; min-max và z-score; `pd.cut`; `get_dummies` |
-| Bài 3–4. Trực quan | Line, bar, histogram, box plot, scatter, heatmap; `subplots` |
-| Bài 5. Phân tích thăm dò | Mean/median/mode, range, IQR, variance, std, CV, skewness, kurtosis; ngoại lệ IQR; Pearson + p-value; `groupby`, `pivot_table`; ANOVA (`f_oneway`); chọn biến theo \|r\| ≥ 0,3 và p < 0,05 |
-| Bài 6. Phát triển mô hình | SLR, MLR, đa thức (`np.polyfit`, `PolynomialFeatures`), Pipeline; regression, residual, distribution plot; MSE, R² |
-| Bài 7. Đánh giá mô hình | `train_test_split` 70/30, `cross_val_score`, `cross_val_predict`; over/underfitting; Ridge; `GridSearchCV`; RMSE, MAE, RSE, RAE; fit lại trên toàn bộ dữ liệu |
-
-**Phần làm thêm:** kiểm tra mô hình đã chọn trên quý kế tiếp (01/09–30/11/2011), là dữ liệu chưa dùng ở bất kỳ bước nào trước đó. Phần này trả lời câu hỏi mà phép chia ngẫu nhiên không trả lời được: mô hình có dự đoán được **quý sau** không.
-
 ## Cách chạy
 
 Dùng Python 3.12. Cài thư viện và JupyterLab (hoặc dùng VS Code có hỗ trợ notebook):
@@ -134,4 +121,3 @@ Báo cáo, slide và hướng dẫn nội bộ được nộp riêng theo yêu c
 - **Dữ liệu:** Chen, D. (2015). *Online Retail* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33.
 - **scikit-learn:** [Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html), [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), [Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html).
 - **SciPy:** [scipy.stats.pearsonr](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html), [scipy.stats.f_oneway](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html).
-- **Bài giảng IE313:** Bài 1–7 và Kỹ thuật lập trình Python cho phân tích dữ liệu.
